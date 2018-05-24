@@ -95,6 +95,18 @@ export class MarkdownEditorComponent
       value = this.preRender(value);
     }
 
+    const youtubeVideoReplaces = (match, widthAndHeight, videoId) => {
+      return `<iframe ${widthAndHeight} src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    };
+    const youtubeReplaser = markdown => {
+      return markdown.replace(
+        /\[youtube(.*)\].*\/watch\?v\=(.*)(\[\/youtube\])$/gim,
+        youtubeVideoReplaces
+      );
+    };
+
+    value = youtubeReplaser(value);
+
     if (value !== null && value !== undefined) {
       if (this._renderMarkTimeout) {
         clearTimeout(this._renderMarkTimeout);
@@ -155,10 +167,6 @@ export class MarkdownEditorComponent
       } else {
         return `<li>${text}</li>`;
       }
-    };
-
-    _markedRender.youtube = (match: any, widthAndHeight: any, videoId: any) => {
-      return `<iframe ${widthAndHeight} src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     };
 
     this._markedOpt = {
@@ -244,6 +252,9 @@ export class MarkdownEditorComponent
         break;
       case 'Image':
         selectedText = `![](http://)`;
+        break;
+      case 'Youtube':
+        selectedText = `[youtube width="" height=""]https://[/youtube]`;
         break;
       case 'Ul':
         selectedText = `- ${selectedText || initText}`;
