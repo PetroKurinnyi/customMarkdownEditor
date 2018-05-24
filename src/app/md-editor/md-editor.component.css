@@ -45,11 +45,17 @@
   position: absolute;
 }
 
-.md-editor-container .tool-bar .btn-group:first-child > .btn:first-child::before {
+.md-editor-container
+  .tool-bar
+  .btn-group:first-child
+  > .btn:first-child::before {
   display: none;
 }
 
-.md-editor-container .tool-bar .btn-group.hide-split > .btn:first-child::before {
+.md-editor-container
+  .tool-bar
+  .btn-group.hide-split
+  > .btn:first-child::before {
   display: none;
 }
 
@@ -61,7 +67,7 @@
   display: flex;
 }
 
-.md-editor-container .editor-container>div {
+.md-editor-container .editor-container > div {
   flex: 1;
 }
 
@@ -77,4 +83,8 @@
   background-color: #f0f0f0;
   font-size: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-check {
+  display: inline;
 }

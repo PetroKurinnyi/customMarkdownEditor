@@ -84,6 +84,8 @@ export class MarkdownEditorComponent
   _options: any;
   _hideIcons: any = {};
 
+  autosave = true;
+
   get markdownValue(): any {
     return this._markdownValue || '';
   }
@@ -105,13 +107,15 @@ export class MarkdownEditorComponent
       );
     };
 
-    value = youtubeReplaser(value);
-
     if (value !== null && value !== undefined) {
       if (this._renderMarkTimeout) {
         clearTimeout(this._renderMarkTimeout);
       }
       this._renderMarkTimeout = setTimeout(() => {
+        if (this.autosave) {
+          localStorage.setItem('markdown', value);
+        }
+        value = youtubeReplaser(value);
         const html = marked(value || '', this._markedOpt);
         this._previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
       }, 100);
@@ -181,7 +185,7 @@ export class MarkdownEditorComponent
     this.editor.$blockScrolling = Infinity;
     this.editor.getSession().setUseWrapMode(true);
     this.editor.getSession().setMode('ace/mode/markdown');
-    this.editor.setValue(this.markdownValue || '');
+    this.editor.setValue(localStorage.getItem('markdown') || '');
 
     this.editor.on('change', (e: any) => {
       const val = this.editor.getValue();

@@ -44,6 +44,13 @@
         <i class="fa" [class.fa-eye]="!showPreviewPanel" [class.fa-eye-slash]="showPreviewPanel"></i>
       </button>
     </div>
+    <div class="form-check" *ngIf="!_hideIcons.Autosave">
+      <!-- not disabled -->
+      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="autosave" id="autosave">
+      <label class="form-check-label" for="autosave">
+        Autosave
+      </label>
+    </div>
     <div class="btn-group pull-right hide-split">
       <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()" *ngIf="!_hideIcons.FullScreen">
         <i class="fa fa-arrows-alt"></i>
