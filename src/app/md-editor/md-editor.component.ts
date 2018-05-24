@@ -127,6 +127,8 @@ export class MarkdownEditorComponent
 
   editor: any;
 
+  canLoad;
+
   showPreviewPanel = true;
   isFullScreen = false;
 
@@ -144,6 +146,12 @@ export class MarkdownEditorComponent
   ) {}
 
   ngOnInit() {
+    if (localStorage.getItem('markdown').length) {
+      this.canLoad = true;
+    } else {
+      this.canLoad = false;
+    }
+
     const _markedRender = new marked.Renderer();
     _markedRender.code = (code: any, language: any) => {
       const validLang = !!(language && hljs.getLanguage(language));
@@ -185,7 +193,7 @@ export class MarkdownEditorComponent
     this.editor.$blockScrolling = Infinity;
     this.editor.getSession().setUseWrapMode(true);
     this.editor.getSession().setMode('ace/mode/markdown');
-    this.editor.setValue(localStorage.getItem('markdown') || '');
+    this.editor.setValue(this._markdownValue || '');
 
     this.editor.on('change', (e: any) => {
       const val = this.editor.getValue();
@@ -310,5 +318,9 @@ export class MarkdownEditorComponent
         this.editor.focus();
       }, timeOut);
     }
+  }
+
+  loadLastSave() {
+    this.editor.setValue(localStorage.getItem('markdown') || '');
   }
 }

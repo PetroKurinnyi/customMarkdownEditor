@@ -44,8 +44,14 @@
         <i class="fa" [class.fa-eye]="!showPreviewPanel" [class.fa-eye-slash]="showPreviewPanel"></i>
       </button>
     </div>
-    <div class="form-check" *ngIf="!_hideIcons.Autosave">
-      <!-- not disabled -->
+
+    <div class="btn-group">
+      <button class="btn btn-sm btn-default" type="button" title="Load last version" [disabled]="!canLoad" (click)="loadLastSave()"
+        *ngIf="!_hideIcons.LoadLastSave">
+        <i class="fa fa-download"></i>
+      </button>
+    </div>
+    <div class="form-check" *ngIf="!_hideIcons.Autosave" title="Save your text">
       <input class="form-check-input" type="checkbox" value="" [(ngModel)]="autosave" id="autosave">
       <label class="form-check-label" for="autosave">
         Autosave
