@@ -321,6 +321,10 @@ export class MarkdownEditorComponent
   }
 
   loadLastSave() {
-    this.editor.setValue(localStorage.getItem('markdown') || '');
+    this.editor.setValue(
+      (this._markdownValue || '') +
+        '\n\n\n\nBackup:\n\n' +
+        (localStorage.getItem('markdown') || '')
+    );
   }
 }
