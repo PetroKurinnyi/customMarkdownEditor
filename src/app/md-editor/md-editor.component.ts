@@ -45,10 +45,12 @@ declare let hljs: any;
   ]
 })
 export class MarkdownEditorComponent
-  implements ControlValueAccessor, Validator, OnInit, AfterViewInit, OnDestroy {
+  implements ControlValueAccessor, Validator, OnInit, AfterViewInit {
   @ViewChild('aceEditor') aceEditorContainer: ElementRef;
 
-  @Output() callBack = new EventEmitter();
+  @Output() textChanged = new EventEmitter<string>();
+
+  @Input() autosave = true;
 
   @Input() hideToolbar = false;
 
@@ -88,8 +90,6 @@ export class MarkdownEditorComponent
   _options: any;
   _hideIcons: any = {};
 
-  autosave = true;
-
   get markdownValue(): any {
     return this._markdownValue || '';
   }
@@ -97,8 +97,7 @@ export class MarkdownEditorComponent
     this._markdownValue = value;
     this._onChange(value);
 
-    // emitting text from editor
-    this.callBack.emit(value);
+    this.textChanged.emit(value);
 
     if (this.preRender && this.preRender instanceof Function) {
       value = this.preRender(value);
@@ -120,7 +119,7 @@ export class MarkdownEditorComponent
       }
       this._renderMarkTimeout = setTimeout(() => {
         if (this.autosave) {
-          localStorage.setItem('markdown', value);
+          localStorage.setItem('backup', value);
         }
         value = youtubeReplaser(value);
         const html = marked(value || '', this._markedOpt);
@@ -134,7 +133,7 @@ export class MarkdownEditorComponent
 
   editor: any;
 
-  canLoad;
+  isBackupAbleToBeLoaded;
 
   showPreviewPanel = true;
   isFullScreen = false;
@@ -153,11 +152,9 @@ export class MarkdownEditorComponent
   ) {}
 
   ngOnInit() {
-    if (localStorage.getItem('markdown').length) {
-      this.canLoad = true;
-    } else {
-      this.canLoad = false;
-    }
+    this.isBackupAbleToBeLoaded = localStorage.getItem('backup').length
+      ? true
+      : false;
 
     const _markedRender = new marked.Renderer();
     _markedRender.code = (code: any, language: any) => {
@@ -207,8 +204,6 @@ export class MarkdownEditorComponent
       this.markdownValue = val;
     });
   }
-
-  ngOnDestroy() {}
 
   writeValue(value: any | Array<any>): void {
     setTimeout(() => {
@@ -331,7 +326,7 @@ export class MarkdownEditorComponent
     this.editor.setValue(
       (this._markdownValue || '') +
         '\n\n\n\nBackup:\n\n' +
-        (localStorage.getItem('markdown') || '')
+        (localStorage.getItem('backup') || '')
     );
   }
 }

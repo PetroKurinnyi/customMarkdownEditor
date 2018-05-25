@@ -46,7 +46,7 @@
     </div>
 
     <div class="btn-group">
-      <button class="btn btn-sm btn-default" type="button" title="Load last version" [disabled]="!canLoad" (click)="loadLastSave()"
+      <button class="btn btn-sm btn-default" type="button" title="Load last Backup" [disabled]="!isBackupAbleToBeLoaded" (click)="loadLastSave()"
         *ngIf="!_hideIcons.LoadLastSave">
         <i class="fa fa-download"></i>
       </button>
