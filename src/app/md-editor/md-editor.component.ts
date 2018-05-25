@@ -8,7 +8,9 @@ import {
   ElementRef,
   OnInit,
   AfterViewInit,
-  OnDestroy
+  OnDestroy,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
@@ -45,6 +47,8 @@ declare let hljs: any;
 export class MarkdownEditorComponent
   implements ControlValueAccessor, Validator, OnInit, AfterViewInit, OnDestroy {
   @ViewChild('aceEditor') aceEditorContainer: ElementRef;
+
+  @Output() callBack = new EventEmitter();
 
   @Input() hideToolbar = false;
 
@@ -92,6 +96,9 @@ export class MarkdownEditorComponent
   set markdownValue(value: any) {
     this._markdownValue = value;
     this._onChange(value);
+
+    // emitting text from editor
+    this.callBack.emit(value);
 
     if (this.preRender && this.preRender instanceof Function) {
       value = this.preRender(value);
