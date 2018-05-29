@@ -88,3 +88,15 @@
 .form-check {
   display: inline;
 }
+
+.fullScreenButton {
+  float: right;
+}
+
+#autosave {
+  margin-left: 10px;
+}
+
+.toggleGroup {
+  margin-right: 5px;
+}

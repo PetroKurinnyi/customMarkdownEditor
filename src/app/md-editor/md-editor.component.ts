@@ -22,6 +22,7 @@ import {
 } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ValueTransformer } from '@angular/compiler/src/util';
+import { MatIconRegistry } from '@angular/material';
 
 declare let ace: any;
 declare let marked: any;
@@ -148,8 +149,16 @@ export class MarkdownEditorComponent
     @Attribute('required') public required: boolean = false,
     @Attribute('maxlength') public maxlength: number = -1,
     private _renderer: Renderer,
-    private _domSanitizer: DomSanitizer
-  ) {}
+    private _domSanitizer: DomSanitizer,
+    iconRegistry: MatIconRegistry
+  ) {
+    iconRegistry.addSvgIcon(
+      'youtube',
+      _domSanitizer.bypassSecurityTrustResourceUrl(
+        '../../../assets/youtube.svg'
+      )
+    );
+  }
 
   ngOnInit() {
     this.isBackupAbleToBeLoaded = localStorage.getItem('backup').length
